@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello</title>
+    <link href={{ url_for('static', filename="test/css/starfield.css") }} rel="stylesheet">
 </head>
 <body>
-    <h1>hello food</h1>
+    <div class="starfield" id="startfield">
+        <canvas id="canvas2d"></canvas>
+    </div>
+
+    <script type="text/javascript" src={{ url_for('static', filename="test/js/starfield.js") }}></script>
 </body>
 </html>
