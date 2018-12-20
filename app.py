@@ -1,6 +1,15 @@
 from flask import Flask, render_template
 
+from utils import socketio
+
+import barrage.views as barrage
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'fun'
+
+app.register_blueprint(barrage.blueprint, url_prefix='/barrage')
+
+socketio.init_app(app)
 
 
 @app.route('/')
@@ -14,4 +23,4 @@ def test_method():
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port='8421')
+	socketio.run(app, host='0.0.0.0', port=8844)
