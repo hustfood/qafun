@@ -9,7 +9,7 @@ app.config['SECRET_KEY'] = 'fun'
 
 app.register_blueprint(barrage.blueprint, url_prefix='/barrage')
 
-socketio.init_app(app)
+socketio.init_app(app, async_mode='eventlet')
 
 
 @app.route('/')
@@ -23,4 +23,4 @@ def test_method():
 
 
 if __name__ == '__main__':
-	socketio.run(app, host='0.0.0.0', port=8421)
+	socketio.run(app, port=8421, )
