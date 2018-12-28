@@ -23,4 +23,4 @@ def test_method():
 
 
 if __name__ == '__main__':
-	socketio.run(app, port=8421, )
+	socketio.run(app, port=8421)
