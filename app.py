@@ -14,12 +14,8 @@ socketio.init_app(app, async_mode='eventlet')
 
 @app.route('/')
 def index_method():
-	return render_template('index.html')
-
-
-@app.route('/test')
-def test_method():
-	return render_template('test.html')
+	# return render_template('index.html')
+	return render_template('qafun.html')
 
 
 if __name__ == '__main__':

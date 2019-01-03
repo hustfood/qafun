@@ -24,7 +24,7 @@ blueprint = Blueprint("barrage", __name__)
 @socketio.on('send barrage', namespace='/barrage')
 def handle_set_const(param):
 	try:
-		say = param.get('say', '')
+		say = param.get('say', '').strip()
 		emit('sync barrage', say, broadcast=True, namespace='/barrage')
 		return "ok"
 	except Exception:
