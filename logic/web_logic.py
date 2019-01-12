@@ -4,6 +4,7 @@ import random
 from db_op import user as db
 import id_generate
 
+###############投票#################################
 def vote(user_vote):
     Userdb = db()
     if not is_valid_time() or not is_valid_id(user_vote['nianhuiid']):
@@ -15,7 +16,7 @@ def vote(user_vote):
     Userdb.save_vote(user_vote)
     return True
 
-
+#判断是不是合法id
 def is_valid_id(_id):
     Userdb = db()
     valid_id_list = Userdb.find_id()
@@ -24,15 +25,18 @@ def is_valid_id(_id):
     else:
         return False
 
+#判断当前是不是合法时间
 def is_valid_time():
     Userdb = db()
     valid_time = Userdb.get_valid_time()
     return eval(valid_time)
 
+#设定是否为投票合法时间
 def set_valid_time(valid_time):
     Userdb = db()
     Userdb.set_valid_time(valid_time)
 
+##############获取当前投票结果#########
 def get_result_now():
     Userdb = db()
     result = {'1':0,'2':0,'3':0,'4':0,'5':0,'0':0}
@@ -42,17 +46,41 @@ def get_result_now():
             continue
         result[str(user.get('vote1',0))]+=1
         result[str(user.get('vote2',0))]+=1
+    game1,game2 = Userdb.get_gamewin()
+    if game1:
+        for key in result.keys():
+            result[key] += game1[key]
+    if game2:
+        for key in result.keys():
+            result[key] += game2[key]
     return result
 
+
+######获得当前胜利组########
 def get_win():
     Userdb = db()
     win_id = Userdb.get_win()
     return win_id
 
+##############设置胜利组#######################
 def set_win(winid):
     Userdb = db()
     Userdb.set_win(winid)
 
+def set_game_score(game_id,rank):
+    Userdb = db()
+    if game_id == 1:
+        rank1_store = 20
+    else:
+        rank1_store = 16
+
+    for i in rank:
+        game_score = {i:rank1_store}
+        rank1_store -= rank1_store/4
+    Userdb.set_win(game_id,game_score)
+
+
+######胜利组抽奖#######
 def random_for_C():
     Userdb = db()
     win_id = get_win()
@@ -64,6 +92,7 @@ def random_for_C():
     Userdb.save(luck_userc[luck_num])
     return luck_userc[luck_num]
 
+#########胜利组投票抽奖#########
 def random_for_vote_C():
     Userdb = db()
     win_id = get_win()

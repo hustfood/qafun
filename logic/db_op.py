@@ -68,6 +68,14 @@ class user(MongoDB):
         system['win_id'] = winid
         self.save(system)
 
+    def set_gamewin(self,game_id,game_score):
+        system = self.find_one({'name':'system'})
+        if game_id ==1:
+            system['game1'] = game_score
+        else:
+            system['game2'] = game_score
+        self.save(system)
+
 #test mongodb
 if __name__ == "__main__":
     a = MongoDB("nianhui19","user")
