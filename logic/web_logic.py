@@ -7,14 +7,16 @@ import id_generate
 ###############投票#################################
 def vote(user_vote):
     Userdb = db()
-    if not is_valid_time() or not is_valid_id(user_vote['nianhuiid']):
-        return False
+    if not is_valid_time():
+        return 1#非法时间
+    if not is_valid_id(user_vote['nianhuiid']):
+        return 2#非法id
     if user_vote.get('vote1') not in [1,2,3,4,5] or user_vote.get('vote2') not in [1,2,3,4,5]:
-        return False
+        return 3#投票内容不合法
     if user_vote.get('vote1') == user_vote.get('vote2'):
-        return False
+        return 4#重复投票
     Userdb.save_vote(user_vote)
-    return True
+    return 0
 
 #判断是不是合法id
 def is_valid_id(_id):
