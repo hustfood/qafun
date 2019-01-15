@@ -64,9 +64,9 @@ def insert_db_from_txt():
         ct = i.split(' ')
         user['nianhuiid'] = ct[0]
         if len(ct)>2:
-            user['name'] = ' '.join([ct[1],ct[2],ct[3],ct[4]]).replace('\n','')
+            user['name'] = ' '.join([ct[1],ct[2],ct[3],ct[4]]).replace('\n','').replace('\r', '')
         else:
-            user['name'] = i.split(' ')[1].replace('\n','')
+            user['name'] = i.split(' ')[1].replace('\n','').replace('\r', '')
         user['group'] = name_dic.get(user['name'].decode('utf8'),0)
         Userdb.insert_user(user)
     user = {'name':'system','valid_time':'True'}
