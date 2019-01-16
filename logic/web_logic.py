@@ -128,6 +128,7 @@ def init_all():
         if i.get('name') == 'system':
             i['valid_time'] = 'True'
             i['win_id'] = 0
+            i['temp_result'] = None
             i['game1'] = None
             i['game2'] = None
         else:
