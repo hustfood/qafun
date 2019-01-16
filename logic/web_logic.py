@@ -51,10 +51,11 @@ def get_result_now():
     game1,game2 = Userdb.get_gamewin()
     if game1:
         for key in result.keys():
-            result[key] += game1[key]
+            result[key] += game1.get(str(key),0)
     if game2:
         for key in result.keys():
-            result[key] += game2[key]
+            result[key] += game2.get(str(key),0)
+
     return result
 
 
@@ -73,12 +74,14 @@ def set_game_score(game_id,rank):
     Userdb = db()
     if game_id == 1:
         rank1_store = 20
+        rank_store = rank1_store
     else:
         rank1_store = 16
-
+        rank_store = rank1_store
+    game_score = {}
     for i in rank:
-        game_score = {i:rank1_store}
-        rank1_store -= rank1_store/4
+        game_score[i] = rank_store
+        rank_store -= rank1_store/4
     Userdb.set_gamewin(game_id,game_score)
 
 
@@ -130,9 +133,10 @@ def init_all():
             i['vote1'] = 0
             i['vote2'] = 0
             i['lucktag'] = 0
-            user_list.save(i)
+        Userdb.save(i)
 
 if __name__ == "__main__":
+    '''
     Userdb = db()
     user_list = Userdb.find()
     for i in user_list:
@@ -147,7 +151,11 @@ if __name__ == "__main__":
     print random_for_vote_C()
     print random_for_vote_C()
     print random_for_vote_C()
-
+    '''
+    set_game_score(1,['5','3','2','4','1'])
+    print get_result_now()
+    init_all()
+    print get_result_now()
 
 
 
