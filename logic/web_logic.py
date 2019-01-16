@@ -93,7 +93,7 @@ def random_for_C():
         return
     luck_userc = list(Userdb.find({'group':int(win_id)}))
     luck_num = random.randint(0,len(luck_userc))
-    while(luck_userc[luck_num].get('lucktag',0) != 1):
+    while luck_userc[luck_num].get('lucktag',0) == 1:
         luck_num = random.randint(0,len(luck_userc))
     luck_userc[luck_num]['lucktag'] = 1
     Userdb.save(luck_userc[luck_num])
@@ -118,14 +118,14 @@ def random_for_vote_C():
     luckuser = Userdb.find_one({'nianhuiid':luck_voteuserc[luckvote]})
     luckuser['lucktag'] = 1
     Userdb.save(luckuser)
-    return luck_voteuserc[luckvote]
+    return luckuser
 
 def init_all():
     Userdb = db()
     user_list = Userdb.find()
     for i in user_list:
         if i.get('name') == 'system':
-            i['valid_time'] = True
+            i['valid_time'] = "True"
             i['win_id'] = 0
             i['game1'] = None
             i['game2'] = None
@@ -136,7 +136,6 @@ def init_all():
         Userdb.save(i)
 
 if __name__ == "__main__":
-    '''
     Userdb = db()
     user_list = Userdb.find()
     for i in user_list:
@@ -145,17 +144,16 @@ if __name__ == "__main__":
         i['vote1'] = random.randint(1,6)
         i['vote2'] = random.randint(1,6)
         vote(i)
-    print get_result_now()
-    set_win(3)
-    print random_for_C()
-    print random_for_vote_C()
-    print random_for_vote_C()
-    print random_for_vote_C()
-    '''
-    set_game_score(1,['5','3','2','4','1'])
-    print get_result_now()
-    init_all()
-    print get_result_now()
+    # print get_result_now()
+    # set_win(3)
+    # print random_for_C()
+    # print random_for_vote_C()
+    # print random_for_vote_C()
+    # print random_for_vote_C()
+    # set_game_score(1,['5','3','2','4','1'])
+    # print get_result_now()
+    # init_all()
+    # print get_result_now()
 
 
 
