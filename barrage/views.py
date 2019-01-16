@@ -93,9 +93,10 @@ def handle_ask_vote_luck():
 @socketio.on('get vote stat', namespace='/barrage')
 def handle_get_vote_stat():
 	try:
-		return web_logic.get_result_now()
+		now_stat, ex_stat = web_logic.get_result_now()
+		return {'now': now_stat, 'ex': ex_stat}
 	except Exception:
-		return []
+		return {}
 
 
 @socketio.on('reset all', namespace='/barrage')
@@ -119,6 +120,15 @@ def handle_ask_valid_time():
 def handle_set_valid_time(param):
 	try:
 		web_logic.set_valid_time(param)
+		return "ok"
+	except Exception:
+		return "error"
+
+
+@socketio.on('save vote', namespace='/barrage')
+def handle_save_vote():
+	try:
+		web_logic.set_temp_result()
 		return "ok"
 	except Exception:
 		return "error"
