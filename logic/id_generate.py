@@ -53,7 +53,7 @@ def insert_db_from_txt():
         except:
             #print user
             name = user_info[1].decode('gbk')
-        group = GROUPDICT.get(user_info[-2],5)
+        group = GROUPDICT.get(user_info[-1].strip(),5)
         name_dic[name] = group
 
     print name_dic
