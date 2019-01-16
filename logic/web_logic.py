@@ -79,7 +79,7 @@ def set_game_score(game_id,rank):
     for i in rank:
         game_score = {i:rank1_store}
         rank1_store -= rank1_store/4
-    Userdb.set_win(game_id,game_score)
+    Userdb.set_gamewin(game_id,game_score)
 
 
 ######胜利组抽奖#######
@@ -90,6 +90,8 @@ def random_for_C():
         return
     luck_userc = list(Userdb.find({'group':int(win_id)}))
     luck_num = random.randint(0,len(luck_userc))
+    while(luck_userc[luck_num].get('lucktag',0) != 1):
+        luck_num = random.randint(0,len(luck_userc))
     luck_userc[luck_num]['lucktag'] = 1
     Userdb.save(luck_userc[luck_num])
     return luck_userc[luck_num]
@@ -114,6 +116,21 @@ def random_for_vote_C():
     luckuser['lucktag'] = 1
     Userdb.save(luckuser)
     return luck_voteuserc[luckvote]
+
+def init_all():
+    Userdb = db()
+    user_list = Userdb.find()
+    for i in user_list:
+        if i.get('name') == 'system':
+            i['valid_time'] = True
+            i['win_id'] = 0
+            i['game1'] = None
+            i['game2'] = None
+        else:
+            i['vote1'] = 0
+            i['vote2'] = 0
+            i['lucktag'] = 0
+            user_list.save(i)
 
 if __name__ == "__main__":
     Userdb = db()
