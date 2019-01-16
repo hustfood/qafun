@@ -56,7 +56,7 @@ def get_result_now():
         for key in result.keys():
             result[key] += game2.get(str(key),0)
 
-    return result
+    return result,get_temp_result()
 
 
 ######获得当前胜利组########
@@ -93,7 +93,7 @@ def random_for_C():
         return
     luck_userc = list(Userdb.find({'group':int(win_id)}))
     luck_num = random.randint(0,len(luck_userc))
-    while luck_userc[luck_num].get('lucktag',0) == 1:
+    while(luck_userc[luck_num].get('lucktag',0) != 1):
         luck_num = random.randint(0,len(luck_userc))
     luck_userc[luck_num]['lucktag'] = 1
     Userdb.save(luck_userc[luck_num])
@@ -118,14 +118,15 @@ def random_for_vote_C():
     luckuser = Userdb.find_one({'nianhuiid':luck_voteuserc[luckvote]})
     luckuser['lucktag'] = 1
     Userdb.save(luckuser)
-    return luckuser
+    return luck_voteuserc[luckvote]
 
+#############恢复初始化############################
 def init_all():
     Userdb = db()
     user_list = Userdb.find()
     for i in user_list:
         if i.get('name') == 'system':
-            i['valid_time'] = "True"
+            i['valid_time'] = 'True'
             i['win_id'] = 0
             i['game1'] = None
             i['game2'] = None
@@ -135,26 +136,45 @@ def init_all():
             i['lucktag'] = 0
         Userdb.save(i)
 
+###########保存当前投票结果##########
+def set_temp_result():
+    result_now,last_temp = get_result_now()
+    Userdb = db()
+    Userdb.set_temp_result(result_now)
+
+def get_temp_result():
+    Userdb = db()
+    return Userdb.get_temp_result()
+
+
+
 if __name__ == "__main__":
+
+    #init_all()
     Userdb = db()
     user_list = Userdb.find()
     for i in user_list:
         if i.get('name') == 'system':
             continue
-        i['vote1'] = random.randint(1,6)
-        i['vote2'] = random.randint(1,6)
-        vote(i)
-    # print get_result_now()
-    # set_win(3)
-    # print random_for_C()
-    # print random_for_vote_C()
-    # print random_for_vote_C()
-    # print random_for_vote_C()
-    # set_game_score(1,['5','3','2','4','1'])
-    # print get_result_now()
-    # init_all()
-    # print get_result_now()
-
+        i['vote1'] = random.randint(1,5)
+        i['vote2'] = random.randint(1,5)
+        a = vote(i)
+    '''
+    print get_result_now()
+    set_win(3)
+    print random_for_C()
+    print random_for_vote_C()
+    print random_for_vote_C()
+    print random_for_vote_C()
+    '''
+    #set_game_score(1,['5','3','2','4','1'])
+    #print get_result_now()
+    #init_all()
+    #print get_result_now()
+    print get_result_now()
+    #set_temp_result()
+    #print get_result_now()
+    print get_temp_result()
 
 
 

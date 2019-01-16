@@ -80,6 +80,14 @@ class user(MongoDB):
         system = self.find_one({'name':'system'})
         return system.get('game1',None),system.get('game2',None)
 
+    def set_temp_result(self,temp_result):
+        system = self.find_one({'name':'system'})
+        system['temp_result'] = temp_result
+        self.save(system)
+
+    def get_temp_result(self):
+        system = self.find_one({'name':'system'})
+        return system.get('temp_result',None)
 #test mongodb
 if __name__ == "__main__":
     a = MongoDB("nianhui19","user")
